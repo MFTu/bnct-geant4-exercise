@@ -40,6 +40,9 @@
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4Material.hh"
+#include "G4Element.hh"
+
 //#include "globals.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4Tubs.hh"
@@ -135,7 +138,18 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //     
   // Shifter
   //  
-  G4Material* shifter_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+  // build spectrum shifter material TiF3
+
+  G4int ncomponents, natoms;
+  G4double TiF3density = 3.4*g/cm3;
+  G4Element* elemTi = nist->FindOrBuildElement("Ti");
+  G4Element* elemF = nist->FindOrBuildElement("F");
+
+  G4Material* shifter_mat = new G4Material("MatConTiF3", TiF3density, ncomponents = 2);
+  shifter_mat -> AddElement(elemTi, natoms = 1);
+  shifter_mat -> AddElement(elemF, natoms = 3);
+
+  //  G4Material* shifter_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
   G4ThreeVector pos_shifter = G4ThreeVector(0, 0, (14/2)*cm);
 
   //beam(10cm diameter, 82cm long) plus target(2cm lithium)
@@ -371,7 +385,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
 
 // poly-Li(delimiter) (polyethylene)
   //  
-  G4Material* delimiter_mat = nist->FindOrBuildMaterial("G4_Pb"); //Pb
+  G4Material* delimiter_mat = nist->FindOrBuildMaterial("G4_POLYETHYLENE"); //POLYETHYLENE
   G4ThreeVector pos_delimiter = G4ThreeVector(0, 0, (14+30+3.5+0.1+9.4-2.0+(2.0)/2)*cm);
         
   // poly-Li(delimiter) length
