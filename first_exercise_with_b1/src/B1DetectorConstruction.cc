@@ -93,6 +93,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //
   G4double world_sizeXY = 80.*cm;
   G4double world_sizeZ  = 120.*cm;
+
+  G4double target_thick  = 0.1*cm;
+
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
   
   G4Box* solidWorld =    
@@ -153,7 +156,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   G4ThreeVector pos_shifter = G4ThreeVector(0, 0, (14/2)*cm);
 
   //beam(10cm diameter, 82cm long) plus target(2cm lithium)
-   G4double BeaminnerRadius = 0.*cm; G4double BeamouterRadius = 10/2.*cm; G4double Beamhz = (82+2)/2.*cm;
+   G4double BeaminnerRadius = 0.*cm; G4double BeamouterRadius = 10/2.*cm; G4double Beamhz = (84+target_thick)/2.*cm;
    G4double BeamstartAngle = 0.*deg; G4double BeamspanningAngle = 360.*deg;
    G4Tubs* BeamPlusTar
      = new G4Tubs("BeamPlusTar",
@@ -163,14 +166,14 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
                BeamstartAngle,
                BeamspanningAngle);
 
-  //positon and orientation of BeamTarget relative to shiter cone 
+  //positon and orientation of BeamTarget "relative to shiter cone" 
    G4RotationMatrix* yBeamRot = new G4RotationMatrix; // Rotates X and Z axes only 
     yBeamRot->rotateY(-M_PI/4.*rad); // Rotates 45 degrees 
   // yBeamRot->rotateY(0.*rad); // Rotates 45 degrees 
    // G4ThreeVector zBeamTrans(0, 0, 0);   
    //G4ThreeVector zBeamTrans(((((-84-2)/2.)+1.)/sqrt(2))*cm, 0, (-((14+82+2)/2.)+1.)*cm); 
    
-   G4ThreeVector zxBeamTrans(-(41./(sqrt(2)))*cm, 0, (-((14+82+2)/2.)+1.)*cm);
+   G4ThreeVector zxBeamTrans(((-((14+84+target_thick)/2.)+(target_thick)/2.)/(sqrt(2)))*cm, 0, (-((84+target_thick)/2.)+(target_thick)/2.)*cm);
         
   // Conical section for shifter       
   G4double shifterwosubeam_rmina =  0.*cm, shifterwosubeam_rmaxb = (6+43/3.)*cm;
@@ -439,8 +442,13 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
     // G4ThreeVector zBeamTrans(0, 0, 0);   
     //G4ThreeVector zBeamTrans(((((-84-2)/2.)+1.)/sqrt(2))*cm, 0, (-((14+82+2)/2.)+1.)*cm); 
   
-    G4ThreeVector LsidezxBeamTrans(-(41.0/(sqrt(2)))*cm, 0, 0.*cm);
-  //  G4ThreeVector LsidezxBeamTrans(-(12.5/(sqrt(2)))*cm, 0, (1.-((82+2-57)/2.))*cm);    
+    //((-((14+84+target_thick)/2.)+(target_thick)/2.)/(sqrt(2)))*cm
+    // (-((14+84+target_thick)/2.)+(target_thick)/2.)
+
+    //G4ThreeVector LsidezxBeamTrans(((-((84+target_thick)/2.)+(target_thick)/2.)/(sqrt(2)))*cm, 0, (-((84+target_thick-57)/2.)+(target_thick)/2.)*cm);
+    //G4ThreeVector LsidezxBeamTrans(((-((84+target_thick)/2.)+(target_thick)/2.)/(sqrt(2)))*cm, 0, 0.*cm);
+    G4ThreeVector LsidezxBeamTrans(-(42./(sqrt(2)))*cm, 0, -1.5*cm);    
+
 
 
   // left side box 
