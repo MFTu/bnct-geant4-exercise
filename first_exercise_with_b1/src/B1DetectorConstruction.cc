@@ -88,15 +88,16 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //
   G4bool checkOverlaps = true;
 
-  //     
+  //     /run/beamOn 10
   // World
   //
   G4double world_sizeXY = 80.*cm;
   G4double world_sizeZ  = 120.*cm;
 
-  G4double target_thick  = 0.1*cm;
+  G4double target_thick  = 0.01*cm;
 
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
+  G4Material* vacuum = nist->FindOrBuildMaterial("G4_Galactic");
   
   G4Box* solidWorld =    
     new G4Box("World",                       //its name
@@ -104,7 +105,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
       
   G4LogicalVolume* logicWorld =                         
     new G4LogicalVolume(solidWorld,          //its solid
-                        world_mat,           //its material
+                        vacuum,           //its material
                         "World");            //its name
                                    
   G4VPhysicalVolume* physWorld = 
@@ -155,7 +156,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   //  G4Material* shifter_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
   G4ThreeVector pos_shifter = G4ThreeVector(0, 0, (14/2)*cm);
 
-  //beam(10cm diameter, 82cm long) plus target(2cm lithium)
+  //beam(10cm diameter, 82cm long) plus target(2cm lithium)Tub
    G4double BeaminnerRadius = 0.*cm; G4double BeamouterRadius = 10/2.*cm; G4double Beamhz = (84+target_thick)/2.*cm;
    G4double BeamstartAngle = 0.*deg; G4double BeamspanningAngle = 360.*deg;
    G4Tubs* BeamPlusTar
@@ -163,8 +164,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
                BeaminnerRadius,
                BeamouterRadius,
                Beamhz,
-               BeamstartAngle,
+               BeamstartAngle,   
                BeamspanningAngle);
+
 
   //positon and orientation of BeamTarget "relative to shiter cone" 
    G4RotationMatrix* yBeamRot = new G4RotationMatrix; // Rotates X and Z axes only 
@@ -481,6 +483,49 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
+
+
+
+
+ //proton to neutron conversion target
+
+  G4Material* tar_mat = nist->FindOrBuildMaterial("G4_Li"); //Li
+  G4ThreeVector pos_tar = G4ThreeVector(0, 0, 0);
+
+  G4double TargetinnerRadius = 0.*cm; G4double TargetouterRadius = 10/2.*cm; 
+  G4double Targethz = (target_thick)/2.*cm;
+  G4double TargetstartAngle = 0.*deg; G4double TargetspanningAngle = 360.*deg;
+  G4Tubs* solidPNConversionTarget
+     = new G4Tubs("PNConversionTarget",
+               TargetinnerRadius,
+               TargetouterRadius,
+               Targethz,
+               TargetstartAngle,
+               TargetspanningAngle);   
+
+
+                      
+  G4LogicalVolume* logicPNConversionTarget =                         
+    new G4LogicalVolume(solidPNConversionTarget,         //its solid
+                        tar_mat,          //its material
+                        "PNConversionTarget");           //its name
+  logicPNConversionTarget->SetVisAttributes(new G4VisAttributes(G4Colour::Green()));
+
+
+  G4RotationMatrix* yTarRot = new G4RotationMatrix; // Rotates X and Z axes only 
+   yTarRot->rotateY(-M_PI/4.*rad); // Rotates 45 degrees 
+               
+  new G4PVPlacement(yTarRot,                       //rotation
+                    pos_tar,                    //at position
+                    logicPNConversionTarget,             //its logical volume
+                    "PNConversionTarget",                //its name
+                    logicWorld,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+             
+   
 
 
 

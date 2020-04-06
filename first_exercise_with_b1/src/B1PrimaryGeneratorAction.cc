@@ -39,6 +39,8 @@
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
 
+#include <cmath>
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 B1PrimaryGeneratorAction::B1PrimaryGeneratorAction()
@@ -53,10 +55,14 @@ B1PrimaryGeneratorAction::B1PrimaryGeneratorAction()
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4String particleName;
   G4ParticleDefinition* particle
+    //= particleTable->FindParticle(particleName="neutron");
     = particleTable->FindParticle(particleName="proton");
   fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  fParticleGun->SetParticleEnergy(5.*MeV);
+
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1./sqrt(2),0.,1./sqrt(2)));
+  //fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
+
+  fParticleGun->SetParticleEnergy(2.5*MeV);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -94,9 +100,9 @@ void B1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   else  {
     G4ExceptionDescription msg;
     msg << "Envelope volume of box shape not found.\n"; 
-    msg << "Perhaps you have changed geometry.\n";
-    msg << "The gun will be place at the center.";
-    G4Exception("B1PrimaryGeneratorAction::GeneratePrimaries()",
+    msg << "Perhaps you have changed g/run/beamOn 10eometry.\n";
+    msg << "The gun will be place at t/run/beamOn 10he center.";
+    G4Exception("B1PrimaryGeneratorAct/run/beamOn 10ion::GeneratePrimaries()",
      "MyCode0002",JustWarning,msg);
   }
 
@@ -105,7 +111,11 @@ void B1PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double y0 = size * envSizeXY * (G4UniformRand()-0.5);
   G4double z0 = -0.5 * envSizeZ;
   
-  fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
+
+  //G4ThreeVector LsidezxBeamTrans(-(42./(sqrt(2)))*cm, 0, -1.5*cm); 
+
+  fParticleGun->SetParticlePosition(G4ThreeVector(-(42./(sqrt(2)))*cm, 0, -(42./(sqrt(2)))*cm));
+  //fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
