@@ -37,8 +37,10 @@
 #endif
 
 #include "G4UImanager.hh"
-//#include "QBBC.hh"
+#include "QBBC.hh"
 #include "QGSP_BIC_HP.hh"
+#include "FTFP_BERT_HP.hh"
+#include "Shielding.hh"
 
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
@@ -75,8 +77,10 @@ int main(int argc,char** argv)
   // Physics list
   //G4VModularPhysicsList* physicsList = new QBBC;
   G4VModularPhysicsList* physicsList = new QGSP_BIC_HP;
-
+  //G4VModularPhysicsList* physicsList = new FTFP_BERT_HP; 
+  //G4VModularPhysicsList* physicsList = new Shielding;  
   physicsList->SetVerboseLevel(1);
+  //physicsList->SetVerboseLevel(2);
   runManager->SetUserInitialization(physicsList);
     
   // User action initialization

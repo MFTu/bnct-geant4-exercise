@@ -92,9 +92,9 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   // World
   //
   G4double world_sizeXY = 80.*cm;
-  G4double world_sizeZ  = 120.*cm;
+  G4double world_sizeZ  = 140.*cm;
 
-  G4double target_thick  = 0.01*cm;
+  G4double target_thick  = 0.001*cm;
 
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
   G4Material* vacuum = nist->FindOrBuildMaterial("G4_Galactic");
@@ -527,6 +527,45 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
              
    
 
+  //BSA exit detector
+
+
+
+  G4double BSAeDetector_innerRadius = 0.*cm; G4double BSAeDetector_outerRadius = 12/2.*cm; 
+  G4double BSAeDetector_hz = 10/2.*cm;
+  G4double BSAeDetector_startAngle = 0.*deg; G4double BSAeDetector_spanningAngle = 360.*deg;
+
+  G4Material* BSA_exit_detector_mat = nist->FindOrBuildMaterial("G4_POLYSTYRENE"); //POLYSTYRENE
+  G4ThreeVector pos_BSA_exit_detector = G4ThreeVector(0, 0, ((14+30+3.5+0.1+9.4+((10.)*6.8))/2)*cm); //??
+
+
+  G4Tubs* solidBSAeDetector
+     = new G4Tubs("BSAeDetector",
+               BSAeDetector_innerRadius,
+               BSAeDetector_outerRadius,
+               BSAeDetector_hz,
+               BSAeDetector_startAngle,
+               BSAeDetector_spanningAngle);   
+
+
+                      
+  G4LogicalVolume* logicBSAeDetector =                         
+    new G4LogicalVolume(solidBSAeDetector,         //its solid
+                        BSA_exit_detector_mat,          //its material
+                        "BSAeDetector");           //its name
+  logicBSAeDetector->SetVisAttributes(new G4VisAttributes(G4Colour:: Cyan()));
+
+  //G4RotationMatrix* yTarRot = new G4RotationMatrix; // Rotates X and Z axes only 
+  // yTarRot->rotateY(-M_PI/4.*rad); // Rotates 45 degrees 
+               
+  new G4PVPlacement(0,                       //no rotation
+                    pos_BSA_exit_detector,                    //at position
+                    logicBSAeDetector,             //its logical volume
+                    "BSAeDetector",                //its name
+                    logicWorld,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
 
 
 
