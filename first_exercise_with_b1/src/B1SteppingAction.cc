@@ -59,11 +59,16 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
         (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     fScoringVolume = detectorConstruction->GetScoringVolume();   
   }
+ 
 
   // get volume of the current step
   G4LogicalVolume* volume 
     = step->GetPreStepPoint()->GetTouchableHandle()
       ->GetVolume()->GetLogicalVolume();
+
+  G4double kineticEfromStepping 
+    = step->GetPreStepPoint()->GetKineticEnergy();	
+
       
   // check if we are in scoring volume
   if (volume != fScoringVolume) return;
@@ -71,6 +76,28 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
   // collect energy deposited in this step
   G4double edepStep = step->GetTotalEnergyDeposit();
   fEventAction->AddEdep(edepStep);  
+  G4cout << "From_steppingaction " << kineticEfromStepping/(CLHEP::MeV) << " MeV" << G4endl;
+
+
+  //G4cout << " This came from steppingaction" << G4endl;
+
+
+/*
+  // get volume of the current step
+  G4LogicalVolume* volume 
+    = step->GetPreStepPoint()->GetTouchableHandle()
+      ->GetVolume()->GetLogicalVolume();   
+      
+  // check if we are in scoring volume
+  if (volume != fScoringVolume) return;
+
+
+  // collect energy deposited in this step
+  G4double edepStep = step->GetTotalEnergyDeposit();
+  fEventAction->AddEdep(edepStep);  
+*/
+
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
