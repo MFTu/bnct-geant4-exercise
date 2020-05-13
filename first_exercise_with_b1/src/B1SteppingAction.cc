@@ -36,6 +36,12 @@
 #include "G4RunManager.hh"
 #include "G4LogicalVolume.hh"
 
+#include "G4Track.hh"
+
+
+
+
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 B1SteppingAction::B1SteppingAction(B1EventAction* eventAction)
@@ -66,8 +72,27 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
     = step->GetPreStepPoint()->GetTouchableHandle()
       ->GetVolume()->GetLogicalVolume();
 
+  // get kinetic energy
   G4double kineticEfromStepping 
     = step->GetPreStepPoint()->GetKineticEnergy();	
+
+
+  // get particle information
+  G4Track* track = step->GetTrack();
+  
+  // From the track you can obtain the pointer to the dynamic particle:
+  const G4DynamicParticle* dynParticle = track->GetDynamicParticle();
+
+  // From the dynamic particle, retrieve the particle definition:
+  G4ParticleDefinition* particle = dynParticle->GetDefinition();
+
+  // The dynamic particle class contains e.g. the kinetic energy after the step:
+  G4double kinEnergyfromTrack = dynParticle->GetKineticEnergy();
+
+  // From the particle definition class you can retrieve static information, like the particle name:
+  G4String particleName = particle->GetParticleName();
+
+
 
       
   // check if we are in scoring volume
@@ -76,7 +101,7 @@ void B1SteppingAction::UserSteppingAction(const G4Step* step)
   // collect energy deposited in this step
   G4double edepStep = step->GetTotalEnergyDeposit();
   fEventAction->AddEdep(edepStep);  
-  G4cout << "From_steppingaction " << kineticEfromStepping/(CLHEP::MeV) << " MeV" << G4endl;
+  G4cout << "From_steppingaction" << ' ' << particleName << ' ' << kineticEfromStepping/(CLHEP::MeV) << ' ' << "MeV" << G4endl;
 
 
   //G4cout << " This came from steppingaction" << G4endl;

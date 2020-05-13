@@ -1,0 +1,8 @@
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/install/strip.dir
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/install/local.dir
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/B1.dir
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/exampleB1.dir
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/edit_cache.dir
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/rebuild_cache.dir
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/install.dir
+/home/arcturus/git/bnct-geant4-exercise/build/CMakeFiles/list_install_components.dir
