@@ -2,8 +2,8 @@
 #read raw file and retrieve and print data to another file  
 
 
-fraw = open("proton500MeVBeamOn1e4.out", "r")
-fdata = open("proton500MeVBeamOn1e4data.txt", "a")
+fraw = open("proton500MeVBeamOn1e4_0517_2020.out", "r")
+fdata = open("proton500MeVBeamOn1e4data_0517_2020.txt", "a")
 
 while True:  
   oneline = fraw.readline()
