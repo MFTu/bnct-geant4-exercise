@@ -38,6 +38,7 @@
 
 #include "G4UImanager.hh"
 #include "QBBC.hh"
+#include "QGSP_BERT_HP.hh"
 #include "QGSP_BIC_HP.hh"
 #include "FTFP_BERT_HP.hh"
 #include "Shielding.hh"
@@ -75,8 +76,8 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new B1DetectorConstruction());
 
   // Physics list
-  //G4VModularPhysicsList* physicsList = new QBBC;
-  G4VModularPhysicsList* physicsList = new QGSP_BIC_HP;
+  G4VModularPhysicsList* physicsList = new QBBC;
+  //G4VModularPhysicsList* physicsList = new QGSP_BIC_HP;
   //G4VModularPhysicsList* physicsList = new FTFP_BERT_HP; 
   //G4VModularPhysicsList* physicsList = new Shielding;  
   physicsList->SetVerboseLevel(1);

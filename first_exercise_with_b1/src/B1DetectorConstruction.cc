@@ -552,7 +552,7 @@ G4VPhysicalVolume* B1DetectorConstruction::Construct()
   G4LogicalVolume* logicBSAeDetector =                         
     new G4LogicalVolume(solidBSAeDetector,         //its solid 
                         BSA_exit_detector_mat,          //its material
-  //                      vacuum,          //material: vacuum
+                    //    vacuum,          //material: vacuum
                         "BSAeDetector");           //its name
   logicBSAeDetector->SetVisAttributes(new G4VisAttributes(G4Colour:: Cyan()));
 
